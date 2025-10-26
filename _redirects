@@ -1,1 +1,2 @@
-/playful/*    /playful/index.html    200
+/playful/*   /Playful/:splat   200
+/applepay/*  /applepay/:splat 200
