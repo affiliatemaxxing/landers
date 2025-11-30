@@ -1,2 +1,3 @@
 /playful/*   /Playful/:splat   200
 /applepay/*  /applepay/:splat 200
+/freecash/*  /freecash/:splat 200
