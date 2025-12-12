@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Apple Bonus</title>
+    
+    <!-- TikTok Pixel -->
+    <script>
+    !function (w, d, t) {
+      w.TiktokAnalyticsObject = t;
+      var ttq = w[t] = w[t] || [];
+      ttq.methods = ["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],
+      ttq.setAndDefer = function (t, e) { t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments,0))) } };
+      for (var i = 0; i < ttq.methods.length; i++) ttq.setAndDefer(ttq, ttq.methods[i]);
+      ttq.load = function (e, n) {
+        var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
+        ttq._i = ttq._i || {},
+        ttq._i[e] = [],
+        ttq._i[e]._u = i,
+        ttq._t = ttq._t || {},
+        ttq._t[e] = +new Date,
+        ttq._o = ttq._o || {},
+        ttq._o[e] = n || {};
+        var o = document.createElement("script");
+        o.type = "text/javascript",
+        o.async = !0,
+        o.src = i + "?sdkid=" + e + "&lib=" + t;
+        var a = document.getElementsByTagName("script")[0];
+        a.parentNode.insertBefore(o, a)
+      };
+      ttq.load('D4M5GRRC77U10O2JF9J0');
+      ttq.page();
+    }(window, document, 'ttq');
+    </script>
+    
     <style>
-        /* --- YOUR EXISTING CSS (unchanged) --- */
         * {
             margin: 0;
             padding: 0;
@@ -33,42 +63,10 @@
         .underline { text-decoration: underline; text-decoration-color: #000000; text-decoration-thickness: 2px; text-underline-offset: 2px; }
         .claim-button { background: #000000; color: #ffffff; border: none; padding: 1rem; border-radius: 20px; font-weight: 800; font-size: 1.1rem; width: 100%; max-width: 400px; cursor: pointer; margin: 1rem auto; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.12), 0 5px 15px rgba(0,0,0,0.08); transition: all 0.3s ease; }
         .claim-button:hover { transform: translatey(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.16), 0 8px 20px rgba(0,0,0,0.12); }
+        .claim-button:disabled { opacity: 0.7; cursor: not-allowed; }
         .trust-badge { width: 100% !important; height: auto !important; margin-top: 0.5rem; border-radius: 12px; opacity: 0.95; transition: opacity 0.3s ease; }
         .trust-badge:hover { opacity: 1; }
-        .notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100%); background: rgba(255, 255, 255, 0.98); padding: 15px 20px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2f3033; z-index: 1000; backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s ease; max-width: 320px; width: calc(100% - 2rem); }
-        .notification.show { transform: translateX(-50%) translateY(0); }
-        #nameAlert { position: fixed; top: 10px; left: 50%; transform: translatex(-50%) translatey(0); background: rgba(255, 255, 255, 0.98); color: #2f3033; padding: 12px 20px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.06); text-align: center; gap: 12px; font-size: 14px; font-weight: 500; z-index: 1000; width: calc(100% - 2rem); max-width: 320px; backdrop-filter: blur(10px); margin: 0 auto; border: 1px solid rgba(0,0,0,0.05); animation: slideDown 0.3s ease-out; display: none; }
     </style>
-
-<!-- TikTok Pixel -->
-<script>
-!function (w, d, t) {
-  w.TiktokAnalyticsObject = t;
-  var ttq = w[t] = w[t] || [];
-  ttq.methods = ["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],
-  ttq.setAndDefer = function (t, e) { t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments,0))) } };
-  for (var i = 0; i < ttq.methods.length; i++) ttq.setAndDefer(ttq, ttq.methods[i]);
-  ttq.load = function (e, n) {
-    var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
-    ttq._i = ttq._i || {},
-    ttq._i[e] = [],
-    ttq._i[e]._u = i,
-    ttq._t = ttq._t || {},
-    ttq._t[e] = +new Date,
-    ttq._o = ttq._o || {},
-    ttq._o[e] = n || {};
-    var o = document.createElement("script");
-    o.type = "text/javascript",
-    o.async = !0,
-    o.src = i + "?sdkid=" + e + "&lib=" + t;
-    var a = document.getElementsByTagName("script")[0];
-    a.parentNode.insertBefore(o, a)
-  };
-  ttq.load('D4M5GRRC77U10O2JF9J0');
-  ttq.page();
-}(window, document, 'ttq');
-</script>
-
 </head>
 <body>
 
@@ -99,53 +97,38 @@
 <script src="js/particles.min.js"></script>
 
 <script>
-
 //////////////////////////////
-// 1. AUTO CAPTURE SUBIDS
+// AUTO CAPTURE SUBIDS
 //////////////////////////////
-
 function getQueryParams() {
     const url = new URL(window.location.href);
     return Object.fromEntries(url.searchParams.entries());
 }
 
-let SUBIDS = getQueryParams(); // s1,s2,s3,s4,s5,utm,custom,etc.
-
+let SUBIDS = getQueryParams();
 
 //////////////////////////////
-// 2. GET TIKTOK CLICK ID
+// GET TIKTOK CLICK ID
 //////////////////////////////
 let ttclid = SUBIDS.ttclid || "";
 
-
 //////////////////////////////
-// 3. APPEND SUBID FUNCTION
+// APPEND SUBID FUNCTION
 //////////////////////////////
-
 function appendSubid(url) {
     const u = new URL(url);
-
     Object.keys(SUBIDS).forEach(key => {
         u.searchParams.set(key, SUBIDS[key]);
     });
-
     if (ttclid) {
         u.searchParams.set("ttclid", ttclid);
     }
-
     return u.toString();
 }
 
-
 //////////////////////////////
-// EXISTING NOTIFICATIONS + COUNTER (unchanged)
+// COUNTER ANIMATION
 //////////////////////////////
-
-const NAMES = ['Ava R.','Ethan T.','Luna W.','Caleb R.','Aria K.','Julian P.'];
-const notifications = [
-    { icon: '🔥', title: 'Trending', text: 'Hot offer in your area' },
-];
-
 function animateValue(element, start, end, duration) {
     let startTimestamp = null;
     const step = (timestamp) => {
@@ -164,37 +147,81 @@ window.addEventListener('load', () => {
     animateValue(amountElement, 0, amountValue, 2000);
 });
 
-
 //////////////////////////////
-// 4. FIRE TIKTOK LEAD EVENTS
+// 🎯 FIXED: SINGLE LEAD EVENT WITH PROPER DELAY
 //////////////////////////////
-
-function fireTikTokLeadEvents() {
-    try {
-        ttq.track('Lead');          // Custom Lead
-        ttq.track('SubmitForm');    // Standard Lead event
-        console.log("TikTok Lead + SubmitForm fired");
-    } catch(e) {
-        console.log("TTQ ERROR:", e);
+function fireTikTokLeadEvent() {
+    if (!window.ttq) {
+        console.warn('⚠️ TikTok pixel not loaded');
+        return Promise.resolve();
     }
+
+    return new Promise((resolve) => {
+        try {
+            const eventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
+            const eventData = {
+                event_id: eventId,
+                content_type: 'lead',
+                content_id: SUBIDS.subid || SUBIDS.s1 || 'organic'
+            };
+            
+            if (ttclid) {
+                eventData.ttclid = ttclid;
+            }
+            
+            // FIRE ONLY ONE EVENT: SubmitForm (Standard Lead Event)
+            ttq.track('SubmitForm', eventData);
+            
+            console.log('✅ TikTok SubmitForm Event Fired:', eventData);
+            
+            // Give event 500ms to send
+            setTimeout(resolve, 500);
+            
+        } catch(e) {
+            console.error('TikTok tracking error:', e);
+            resolve(); // Continue even if tracking fails
+        }
+    });
 }
 
-
 //////////////////////////////
-// 5. BUTTON CLICK HANDLER
+// 🎯 FIXED: BUTTON CLICK WITH PROPER EVENT HANDLING
 //////////////////////////////
-
-document.getElementById('claimButton').addEventListener('click', function () {
-
-    fireTikTokLeadEvents(); // fire tracking
-
-    const finalURL = appendSubid(
-        "https://t.afftrackr.com/?oex3=JG1Y6Vp0LH%2bbjh3bjrn51TXGZpjGMHexvQJDRoz7h5U%3d&s1="
-    );
-
-    window.location.href = finalURL; // instant redirect
+document.getElementById('claimButton').addEventListener('click', async function (e) {
+    // Prevent any default behavior
+    e.preventDefault();
+    
+    const button = this;
+    const originalText = button.textContent;
+    
+    // Disable button to prevent double clicks
+    button.disabled = true;
+    button.textContent = 'Loading...';
+    
+    try {
+        // Fire TikTok event and WAIT for it to complete
+        await fireTikTokLeadEvent();
+        
+        // Build final URL with all subids
+        const finalURL = appendSubid(
+            "https://t.afftrackr.com/?oex3=JG1Y6Vp0LH%2bbjh3bjrn51TXGZpjGMHexvQJDRoz7h5U%3d"
+        );
+        
+        console.log('🔗 Redirecting to:', finalURL);
+        
+        // Now redirect
+        window.location.href = finalURL;
+        
+    } catch (error) {
+        console.error('Error:', error);
+        // If anything fails, still redirect
+        const finalURL = appendSubid(
+            "https://t.afftrackr.com/?oex3=JG1Y6Vp0LH%2bbjh3bjrn51TXGZpjGMHexvQJDRoz7h5U%3d"
+        );
+        window.location.href = finalURL;
+    }
 });
-
 </script>
 </body>
 </html>
