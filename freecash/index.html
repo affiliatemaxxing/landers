@@ -6,7 +6,9 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>Get Paid for Everyday Stuff</title>
   
-  <!-- TikTok Pixel -->
+  <!-- ========================================
+       TIKTOK PIXEL - LOADS ON PAGE VIEW
+       ======================================== -->
   <script>
   !function (w, d, t) {
     w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
@@ -14,7 +16,7 @@
   ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
 
     ttq.load('D4M5GRRC77U10O2JF9J0');
-    ttq.page();
+    ttq.page(); // This fires immediately when page loads
   }(window, document, 'ttq');
   </script>
   
@@ -225,17 +227,14 @@
 
   <script>
     // ========================================
-    // 🔧 CONFIGURATION
+    // CONFIGURATION
     // ========================================
     const CONFIG = {
-      // YOUR BASE AFFILIATE LINKS (WITHOUT SUBID)
-      // The script will automatically append &s1=SUBID to these
       affiliateLinks: {
-        over21: 'https://affrkr.com/?ge4=mxIUgjndCFGb2c%2f2voW4H37XxReA8dJYvQJDRoz7h5U%3d&s1=',
-        under21: 'https://affrkr.com/?ge4=mxIUgjndCFGb2c%2f2voW4H37XxReA8dJYvQJDRoz7h5U%3d&s1='
+        over21: 'https://affrkr.com/?nc2u=R5wTRzdv21%2bvWFCfqns8HTQZaWMQLQ34vQJDRoz7h5U%3d',
+        under21: 'https://affrkr.com/?nc2u=R5wTRzdv21%2bvWFCfqns8HTQZaWMQLQ34vQJDRoz7h5U%3d'
       },
       
-      // Which parameter name to use for subid (your affiliate network uses 's1')
       subidParamName: 's1',
       
       under21Branding: {
@@ -246,54 +245,35 @@
     };
 
     // ========================================
-    // 🎯 AUTO SUBID APPENDER SCRIPT
+    // AUTO SUBID CAPTURE
     // ========================================
-    
-    /**
-     * Captures 'subid' from URL and appends to affiliate link
-     * 
-     * EXAMPLE:
-     * Landing Page URL: xxx.com/freecash?subid=dec06r2
-     * Result: https://affrkr.com/...&s1=dec06r2
-     * 
-     * Your VA just adds ?subid=WHATEVER to any landing page!
-     */
     function getSubID() {
       const params = new URLSearchParams(window.location.search);
-      // Check multiple possible parameter names
       return params.get('subid') || 
              params.get('subID') || 
              params.get('sub') || 
              params.get('sid') || 
-             'organic'; // Default if no subid found
+             'organic';
     }
 
     function appendSubIDToUrl(baseUrl, subid) {
       try {
         const url = new URL(baseUrl);
-        // Append subid using your affiliate network's parameter name
         url.searchParams.set(CONFIG.subidParamName, subid);
         return url.toString();
       } catch (e) {
-        console.error('URL append error:', e);
-        // Fallback: just add &s1=subid to the end
         const separator = baseUrl.includes('?') ? '&' : '?';
         return `${baseUrl}${separator}${CONFIG.subidParamName}=${encodeURIComponent(subid)}`;
       }
     }
 
     // ========================================
-    // 📱 OS DETECTION & DEEP LINKING
+    // OS DETECTION & DEEP LINKING
     // ========================================
-    
     function detectOS() {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return 'iOS';
-      }
-      if (/android/i.test(userAgent)) {
-        return 'Android';
-      }
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return 'iOS';
+      if (/android/i.test(userAgent)) return 'Android';
       return 'Other';
     }
 
@@ -313,13 +293,12 @@
         }
         return urlString;
       } catch (e) {
-        console.error('Deep link error:', e);
         return urlString;
       }
     }
 
     // ========================================
-    // 🎯 MAIN LOGIC
+    // MAIN LOGIC
     // ========================================
     (function() {
       const step1 = document.getElementById('step1');
@@ -329,7 +308,6 @@
       
       if (!step1 || !step2 || !btn) return;
 
-      // Capture subid from URL on page load
       const subID = getSubID();
       console.log('📌 SubID captured:', subID);
 
@@ -341,23 +319,16 @@
         card.addEventListener('click', () => {
           selectedAge = card.dataset.age;
           
-          // 1. Get base affiliate link
           const baseUrl = selectedAge === 'under21' 
             ? CONFIG.affiliateLinks.under21 
             : CONFIG.affiliateLinks.over21;
           
-          // 2. Append subid to affiliate link
           const urlWithSubID = appendSubIDToUrl(baseUrl, subID);
-          
-          // 3. Transform for mobile deep linking
           finalUrl = transformUrlForOS(urlWithSubID);
-          
-          // 4. Update button href
           btn.href = finalUrl;
           
           console.log('🔗 Final URL:', finalUrl);
           
-          // Update branding for under 21
           if (selectedAge === 'under21') {
             const badge = document.getElementById('step1-badge');
             const subheadline = document.getElementById('step2-subheadline');
@@ -372,7 +343,7 @@
       });
 
       // ========================================
-      // 🎯 BUTTON CLICK WITH TIKTOK TRACKING
+      // 🎯 LEAD EVENT ON BUTTON CLICK
       // ========================================
       btn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -382,33 +353,42 @@
           return;
         }
         
-        // Get tracking parameters
+        // Get TikTok click ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const ttclid = urlParams.get('ttclid');
         
-        // Fire TikTok events
+        // Fire TikTok LEAD EVENT
         if (window.ttq) {
-          const eventId = 'evt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          const eventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
           
-          const baseData = {
+          const leadEventData = {
             event_id: eventId,
-            content_id: subID, // Use captured subid for tracking
-            content_type: 'product'
+            content_id: subID,
+            content_type: 'lead',  // IMPORTANT: This is a LEAD event
+            content_name: 'affiliate_lead_form'
           };
           
-          if (ttclid) baseData.ttclid = ttclid;
+          // Add ttclid for better attribution
+          if (ttclid) {
+            leadEventData.ttclid = ttclid;
+          }
           
-          ttq.track('ClickButton', { ...baseData, content_name: 'cta_button' });
-          ttq.track('InitiateCheckout', { ...baseData, value: 1, currency: 'USD' });
-          ttq.track('CompleteRegistration', { ...baseData });
+          // Fire SubmitForm event (TikTok's standard Lead event)
+          ttq.track('SubmitForm', leadEventData);
           
-          console.log('✅ TikTok Events:', { eventId, subID, ttclid, selectedAge });
+          console.log('✅ TikTok LEAD Event Fired:', {
+            event: 'SubmitForm',
+            eventId: eventId,
+            subID: subID,
+            ttclid: ttclid,
+            selectedAge: selectedAge
+          });
+        } else {
+          console.warn('⚠️ TikTok pixel not loaded');
         }
         
-        // Redirect after 300ms
-        setTimeout(() => {
-          window.location.href = finalUrl;
-        }, 300);
+        // Redirect immediately (no delay needed)
+        window.location.href = finalUrl;
       });
     })();
   </script>
