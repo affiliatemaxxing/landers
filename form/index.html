@@ -212,26 +212,124 @@
     </div>
 
     <script>
-        function proceedToDestination() {
-            // Get all URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            // Get destination URL (if provided) or use default
-            let mainLanderURL = urlParams.get('dest') || 'https://reward-tt.com/applepay';
-            
-            // Extract subid and ttclid
-            const subid = urlParams.get('subid') || urlParams.get('s1') || 'organic';
-            const ttclid = urlParams.get('ttclid') || '';
-            
-            // Add parameters to destination
-            const params = new URLSearchParams();
-            params.set('subid', subid);
-            if (ttclid) {
-                params.set('ttclid', ttclid);
+        // Get URL parameters
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                subid: params.get('subid') || params.get('sub') || params.get('s1') || 'organic',
+                ttclid: params.get('ttclid') || '',
+                dest: params.get('dest') || 'https://reward-tt.com/applepay'
+            };
+        }
+
+        // Check if value is not null/undefined/empty
+        function isValidValue(value) {
+            return value !== null && value !== undefined && value !== '';
+        }
+
+        // Get new URLSearchParams object
+        function getNewURLSearchParams() {
+            return new URLSearchParams(window.location.search);
+        }
+
+        // Check if parameter exists in URL
+        function hasParam(paramName) {
+            return getNewURLSearchParams().has(paramName);
+        }
+
+        // Detect if Android
+        function isAndroid() {
+            return navigator.userAgent.toLowerCase().indexOf('android') > -1;
+        }
+
+        // Build final URL with parameters
+        function buildFinalURL(baseURL, params) {
+            if (isAndroid()) {
+                // Android: Use intent URL to force external browser
+                return baseURL.replace(/^https?:\/\//, function(protocol) {
+                    return 'intent://' + protocol;
+                });
+            } else {
+                // iOS and others: Normal HTTPS
+                return baseURL;
             }
-            
-            // Redirect to main lander
-            window.location.href = mainLanderURL + '?' + params.toString();
+        }
+
+        // Add parameters to URL
+        function addParametersToURL(baseURL, paramsToAdd) {
+            try {
+                var urlObj = new URL(baseURL);
+            } catch (e) {
+                return baseURL;
+            }
+
+            paramsToAdd.forEach(function(paramKey) {
+                var paramValue = getNewURLSearchParams().get(paramKey);
+                if (isValidValue(paramValue) && !urlObj.searchParams.has(paramKey)) {
+                    urlObj.searchParams.append(paramKey, paramValue);
+                }
+            });
+
+            return urlObj.toString();
+        }
+
+        // Main function to process destination
+        function processDestination(destinationURL) {
+            var finalURL;
+            try {
+                finalURL = new URL(destinationURL);
+            } catch (e) {
+                return destinationURL;
+            }
+
+            if (isAndroid()) {
+                // Android: Build intent URL
+                return 'https://' + finalURL.host + finalURL.pathname + finalURL.search + finalURL.hash + '#Intent;scheme=https;end';
+            } else {
+                // iOS: Regular URL
+                return finalURL.protocol + '//' + finalURL.host + finalURL.pathname + finalURL.search + finalURL.hash;
+            }
+        }
+
+        // Redirect function
+        function proceedToDestination() {
+            var params = getQueryParams();
+            var destinationURL = params.dest;
+
+            // Check if destination is valid
+            if (!isValidValue(destinationURL)) return;
+
+            // Try to decode destination if it's encoded
+            try {
+                destinationURL = decodeURIComponent(destinationURL);
+            } catch (e) {}
+
+            var urlSearchParams = getNewURLSearchParams();
+
+            // List of parameters to append
+            var paramsToAppend = [
+                'subid',
+                'sub',
+                'ttclid',
+                's1',
+                's2',
+                's3',
+                's4',
+                's5'
+            ];
+
+            var newParams = new URLSearchParams();
+            paramsToAppend.forEach(function(paramKey) {
+                var paramValue = urlSearchParams.get(paramKey);
+                if (isValidValue(paramValue)) {
+                    newParams.append(paramKey, paramValue);
+                }
+            });
+
+            destinationURL = addParametersToURL(destinationURL, paramsToAppend);
+            destinationURL = processDestination(destinationURL);
+
+            window.location.href = destinationURL;
         }
     </script>
 </body>
