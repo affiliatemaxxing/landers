@@ -216,14 +216,14 @@
             // Get all URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             
+            // Get destination URL (if provided) or use default
+            let mainLanderURL = urlParams.get('dest') || 'https://reward-tt.com/applepay';
+            
             // Extract subid and ttclid
             const subid = urlParams.get('subid') || urlParams.get('s1') || 'organic';
             const ttclid = urlParams.get('ttclid') || '';
             
-            // Build main lander URL with proper parameters
-            let mainLanderURL = 'https://reward-tt.com/applepay';
-            
-            // Add parameters
+            // Add parameters to destination
             const params = new URLSearchParams();
             params.set('subid', subid);
             if (ttclid) {
