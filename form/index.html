@@ -212,125 +212,115 @@
     </div>
 
     <script>
-        // Get URL parameters
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                subid: params.get('subid') || params.get('sub') || params.get('s1') || 'organic',
-                ttclid: params.get('ttclid') || '',
-                dest: params.get('dest') || 'https://reward-tt.com/applepay'
-            };
-        }
-
-        // Check if value is not null/undefined/empty
-        function isValidValue(value) {
+        // Helper functions
+        function isNotEmpty(value) {
             return value !== null && value !== undefined && value !== '';
         }
 
-        // Get new URLSearchParams object
-        function getNewURLSearchParams() {
+        function getURLSearchParams() {
             return new URLSearchParams(window.location.search);
         }
 
-        // Check if parameter exists in URL
-        function hasParam(paramName) {
-            return getNewURLSearchParams().has(paramName);
+        function getParam(paramName) {
+            return getURLSearchParams().get(paramName);
         }
 
-        // Detect if Android
         function isAndroid() {
             return navigator.userAgent.toLowerCase().indexOf('android') > -1;
         }
 
-        // Build final URL with parameters
-        function buildFinalURL(baseURL, params) {
-            if (isAndroid()) {
-                // Android: Use intent URL to force external browser
-                return baseURL.replace(/^https?:\/\//, function(protocol) {
-                    return 'intent://' + protocol;
-                });
-            } else {
-                // iOS and others: Normal HTTPS
-                return baseURL;
-            }
-        }
-
-        // Add parameters to URL
-        function addParametersToURL(baseURL, paramsToAdd) {
+        // Build final URL with all parameters
+        function buildDestinationURL(baseURL) {
+            var finalURL;
             try {
-                var urlObj = new URL(baseURL);
+                finalURL = new URL(baseURL);
             } catch (e) {
                 return baseURL;
             }
 
-            paramsToAdd.forEach(function(paramKey) {
-                var paramValue = getNewURLSearchParams().get(paramKey);
-                if (isValidValue(paramValue) && !urlObj.searchParams.has(paramKey)) {
-                    urlObj.searchParams.append(paramKey, paramValue);
+            var urlParams = getURLSearchParams();
+            var paramsToAppend = ['subid', 'sub', 's1', 's2', 's3', 's4', 's5', 'ttclid'];
+            
+            paramsToAppend.forEach(function(paramKey) {
+                var paramValue = urlParams.get(paramKey);
+                if (isNotEmpty(paramValue) && !finalURL.searchParams.has(paramKey)) {
+                    finalURL.searchParams.append(paramKey, paramValue);
                 }
             });
 
-            return urlObj.toString();
+            return finalURL.toString();
         }
 
-        // Main function to process destination
-        function processDestination(destinationURL) {
-            var finalURL;
+        // Process URL for Android intent or iOS regular
+        function processURLForPlatform(url) {
+            var urlObj;
             try {
-                finalURL = new URL(destinationURL);
+                urlObj = new URL(url);
             } catch (e) {
-                return destinationURL;
+                return url;
             }
 
             if (isAndroid()) {
-                // Android: Build intent URL
-                return 'https://' + finalURL.host + finalURL.pathname + finalURL.search + finalURL.hash + '#Intent;scheme=https;end';
+                // Android: Convert to intent URL
+                return 'https://' + urlObj.host + urlObj.pathname + urlObj.search + urlObj.hash + '#Intent;scheme=https;end';
             } else {
-                // iOS: Regular URL
-                return finalURL.protocol + '//' + finalURL.host + finalURL.pathname + finalURL.search + finalURL.hash;
+                // iOS: Regular HTTPS URL
+                return urlObj.protocol + '//' + urlObj.host + urlObj.pathname + urlObj.search + urlObj.hash;
             }
         }
 
-        // Redirect function
+        // Main redirect function (called by button)
         function proceedToDestination() {
-            var params = getQueryParams();
-            var destinationURL = params.dest;
+            var destParam = getParam('dest');
+            if (!isNotEmpty(destParam)) {
+                destParam = 'https://reward-tt.com/applepay';
+            }
 
-            // Check if destination is valid
-            if (!isValidValue(destinationURL)) return;
-
-            // Try to decode destination if it's encoded
             try {
-                destinationURL = decodeURIComponent(destinationURL);
+                destParam = decodeURIComponent(destParam);
             } catch (e) {}
 
-            var urlSearchParams = getNewURLSearchParams();
+            var finalURL = buildDestinationURL(destParam);
+            finalURL = processURLForPlatform(finalURL);
 
-            // List of parameters to append
-            var paramsToAppend = [
-                'subid',
-                'sub',
-                'ttclid',
-                's1',
-                's2',
-                's3',
-                's4',
-                's5'
-            ];
+            window.location.href = finalURL;
+        }
 
+        // ON PAGE LOAD: Automatically modify window.location.href to trigger Safari prompt
+        window.addEventListener('load', function() {
+            var destParam = getParam('dest');
+            
+            if (!isNotEmpty(destParam)) return;
+
+            try {
+                destParam = decodeURIComponent(destParam);
+            } catch (e) {}
+
+            var urlParams = getURLSearchParams();
+            var paramsToAppend = ['subid', 'sub', 's1', 's2', 's3', 's4', 's5', 'ttclid'];
+            
             var newParams = new URLSearchParams();
             paramsToAppend.forEach(function(paramKey) {
-                var paramValue = urlSearchParams.get(paramKey);
-                if (isValidValue(paramValue)) {
+                var paramValue = urlParams.get(paramKey);
+                if (isNotEmpty(paramValue)) {
                     newParams.append(paramKey, paramValue);
                 }
             });
 
-            destinationURL = addParametersToURL(destinationURL, paramsToAppend);
-            destinationURL = processDestination(destinationURL);
+            var finalDestURL = buildDestinationURL(destParam);
+            
+            try {
+                finalDestURL = new URL(finalDestURL);
+            } catch (e) {
+                return;
+            }
 
-            window.location.href = destinationURL;
-        }
+            var processedURL = processURLForPlatform(finalDestURL.toString());
+            
+            // THIS IS THE KEY: Set window.location.href on load
+            // This triggers iOS to show "Open in Safari" prompt
+            window.location.href = processedURL;
+        });
     </script>
 </body>
 </html>
