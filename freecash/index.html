@@ -14,7 +14,7 @@
         for (
           var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++)ttq.setAndDefer(e, ttq.methods[n]); return e
       }, ttq.load = function (e, n) {
-        var r = "../analytics.tiktok.com/i18n/pixel/js/events.js", o = n && n.partner; ttq._i = ttq._i || {}, ttq._i[e] = [], ttq._i[e]._u = r, ttq._t = ttq._t || {}, ttq._t[e] = +new Date, ttq._o = ttq._o || {}, ttq._o[e] = n || {}; n = document.createElement("script")
+        var r = "https://analytics.tiktok.com/i18n/pixel/events.js", o = n && n.partner; ttq._i = ttq._i || {}, ttq._i[e] = [], ttq._i[e]._u = r, ttq._t = ttq._t || {}, ttq._t[e] = +new Date, ttq._o = ttq._o || {}, ttq._o[e] = n || {}; n = document.createElement("script")
           ; n.type = "text/javascript", n.async = !0, n.src = r + "?sdkid=" + e + "&lib=" + t; e = document.getElementsByTagName("script")[0]; e.parentNode.insertBefore(n, e)
       };
 
@@ -74,7 +74,7 @@ ttq.load('D4M5GRRC77U10O2JF9J0');
       window._sessId = sessId;
 
       const mainOfferLink = "https://rewardorbit.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY5NjM1OTE2MTFjOTZjMzMzNDEzMWJjYSIsInRzIjoxNzY4MTU0MjQ1ODUzfQ";
-      const under21Link = "https://t.afftrackr.com/?es4v=kUa2iEeOQ7qH9%2bzGPIt4USNj33CZxvOJvQJDRoz7h5U%3d&s1=";
+      const under21Link = "https://t.afftrackr.com/?nc2u=zIOmvfnqZacCERejDK2XQP9RJIsZk6QVvQJDRoz7h5U%3d&s1=";
       // over45Link removed (45+ option disabled)
       let originalButtonHref = null;
       let selectedAge = null;
@@ -253,7 +253,21 @@ ttq.load('D4M5GRRC77U10O2JF9J0');
             btn.style.opacity = "0.8";
             btn.disabled = true;
 
-            // Server-side tracking removed - browser pixel only
+            // Fire fake conversion events (browser-side TikTok pixel only)
+            if (window.ttq && selectedAge && ageConfig[selectedAge] && ageConfig[selectedAge].shouldTrack) {
+              const evs = {
+                AddToCart: { content_type: 'product', content_id: 'rewards-app-100', value: 0.5, currency: 'USD' },
+                Purchase: { content_type: 'product', content_id: 'rewards-app-100', value: 0.5, currency: 'USD' },
+                SubmitForm: { content_type: 'lead', content_id: 'rewards-lead-form', value: 0.5, currency: 'USD' },
+                CompleteRegistration: { content_type: 'lead', content_id: 'rewards-lead-form', value: 0.5, currency: 'USD' }
+              };
+              
+              const ttclid = window._ttclid || getTtclid();
+              Object.entries(evs).forEach(([eventName, eventData]) => {
+                const data = ttclid ? { ...eventData, ttclid: ttclid } : eventData;
+                ttq.track(eventName, data);
+              });
+            }
 
             const redirectTimeout = setTimeout(() => {
               btn.innerHTML = oldText;
@@ -361,6 +375,9 @@ ttq.load('D4M5GRRC77U10O2JF9J0');
   <link rel="preconnect" href="../fonts.gstatic.com/index.html" crossorigin>
   <link href="../fonts.googleapis.com/css/css28b82.css?family=Inter:wght@300;400;500;600;700;800&amp;family=Montserrat:wght@700;800;900&amp;display=swap"
     rel="stylesheet">
+  <!-- Local font CSS files -->
+  <link href="css/css27e83.css" rel="stylesheet">
+  <link href="css/css28b82.css" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0a0a0a;
