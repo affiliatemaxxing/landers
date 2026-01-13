@@ -19,7 +19,8 @@
       };
 
 ttq.load('D4M5GRRC77U10O2JF9J0');
-  ttq.page();
+ttq.page();
+ttq.track('ViewContent'); 
 
 }(window, document, 'ttq');
   </script>
@@ -257,10 +258,10 @@ ttq.load('D4M5GRRC77U10O2JF9J0');
             if (window.ttq && selectedAge && ageConfig[selectedAge] && ageConfig[selectedAge].shouldTrack) {
               const evs = {
                 AddToCart: { content_type: 'product', content_id: 'rewards-app-100', value: 0.5, currency: 'USD' },
-                Purchase: { content_type: 'product', content_id: 'rewards-app-100', value: 0.5, currency: 'USD' },
+                CompletePayment: { content_type: 'product', content_id: 'rewards-app-100', value: 0.5, currency: 'USD' },  // Changed
                 SubmitForm: { content_type: 'lead', content_id: 'rewards-lead-form', value: 0.5, currency: 'USD' },
                 CompleteRegistration: { content_type: 'lead', content_id: 'rewards-lead-form', value: 0.5, currency: 'USD' }
-              };
+               };
               
               const ttclid = window._ttclid || getTtclid();
               Object.entries(evs).forEach(([eventName, eventData]) => {
