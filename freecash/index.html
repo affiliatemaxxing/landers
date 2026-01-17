@@ -185,19 +185,23 @@ ttq.load('D4M5GRRC77U10O2JF9J0');
       }
 
       function buildUnder21Url(subVal) {
-        const urlObj = new URL(under21Link);
-        if (subVal) urlObj.searchParams.set("s1", subVal);
-        return urlObj.toString();
-      }
+  const urlObj = new URL(under21Link);
+  if (subVal) {
+    urlObj.searchParams.set("s1", subVal);
+    urlObj.searchParams.set("s2", subVal);  // ADDED THIS LINE
+  }
+  return urlObj.toString();
+}
 
       // buildOver45Url removed (45+ option disabled)
 
       function buildOriginalButtonUrl(btn, subVal, sessId) {
-        if (!originalButtonHref) originalButtonHref = btn.href;
-        const urlObj = new URL(mainOfferLink);
-        urlObj.searchParams.set("s2", subVal || "");
-        return urlObj.toString();
-      }
+  if (!originalButtonHref) originalButtonHref = btn.href;
+  const urlObj = new URL(mainOfferLink);
+  urlObj.searchParams.set("s1", subVal || "");  // ADDED THIS LINE
+  urlObj.searchParams.set("s2", subVal || "");
+  return urlObj.toString();
+}
 
       function getRedirectUrl(btn, subVal, selectedAge) {
         // Split test disabled - if (subVal && subVal.includes('ww')) return buildFivePctLinkUrl(subVal);
