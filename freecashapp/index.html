@@ -19,8 +19,8 @@
     </script>
     <!-- TikTok Pixel Code End -->
     
-    <link rel="icon" type="image/x-icon" href="https://imgur.com/d4rEH4U">
-    <link rel="apple-touch-icon" href="https://imgur.com/d4rEH4U">
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/d4rEH4U.png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/d4rEH4U.png">
     <title>Freecash - Download App</title>
     
     <style>
@@ -411,41 +411,67 @@
 
         /* Activation Notice */
         .activation-notice {
-            background: linear-gradient(135deg, rgba(0,255,136,.08) 0%, transparent 100%);
-            border: 1px solid rgba(0,255,136,.2);
-            border-radius: 12px;
-            padding: 20px;
+            background: linear-gradient(135deg, rgba(255,71,87,.1) 0%, rgba(0,0,0,0.3) 100%);
+            border: 2px solid rgba(255,71,87,.5);
+            border-radius: 16px;
+            padding: 24px;
             margin-bottom: 24px;
             text-align: left;
+            position: relative;
         }
 
         .activation-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
             gap: 12px;
-            margin-bottom: 12px;
+        }
+
+        .activation-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .important-badge {
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(255,71,87,.4);
         }
 
         .lock-icon {
-            font-size: 24px;
+            font-size: 28px;
+            filter: drop-shadow(0 2px 8px rgba(255,255,255,.3));
         }
 
         .activation-title {
-            font-size: 16px;
+            font-size: 22px;
             font-weight: 700;
             color: var(--text);
+            line-height: 1.2;
         }
 
         .activation-text {
-            font-size: 14px;
-            color: var(--muted);
-            line-height: 1.5;
+            font-size: 16px;
+            color: #ccc;
+            line-height: 1.6;
             margin: 0;
         }
 
         .highlight-green {
             color: var(--brand);
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 17px;
         }
 
         /* Footer */
@@ -485,7 +511,7 @@
                 </div>
                 <span class="partnership-x">×</span>
                 <div class="logo-container">
-                    <img class="logo" src="https://imgur.com/d4rEH4U" alt="Freecash Logo" />
+                    <img class="logo" src="https://i.imgur.com/d4rEH4U.png" alt="Freecash Logo" />
                 </div>
             </div>
 
@@ -517,7 +543,7 @@
                 </div>
                 <span class="partnership-x">×</span>
                 <div class="logo-container">
-                    <img class="logo" src="https://imgur.com/d4rEH4U" alt="Freecash Logo" />
+                    <img class="logo" src="https://i.imgur.com/d4rEH4U.png" alt="Freecash Logo" />
                 </div>
             </div>
 
@@ -579,8 +605,13 @@
             <!-- Activation Required Notice -->
             <div class="activation-notice">
                 <div class="activation-header">
-                    <span class="lock-icon">🔓</span>
-                    <span class="activation-title">Activation Required</span>
+                    <div class="activation-header-left">
+                        <span class="lock-icon">🔓</span>
+                        <span class="activation-title">Activation Required</span>
+                    </div>
+                    <span class="important-badge">
+                        ⚠️ IMPORTANT
+                    </span>
                 </div>
                 <p class="activation-text">
                     New users: Complete <span class="highlight-green">2 quick offers</span> to unlock full access and start earning with TikTok videos.
@@ -631,7 +662,7 @@
         // Restore console for our own logging
         window._console = originalConsole;
         
-        // Use this for internal logging: window._window._console.log() instead of window._console.log()
+        // Use this for internal logging: window._console.log() instead of console.log()
     })();
 
     // ========================================
