@@ -846,24 +846,27 @@
     }
 
     // ========================================
-    // BUILD REDIRECT URLs WITH SUBID (both s1 and s2)
+    // BUILD REDIRECT URLs WITH SUBID
     // ========================================
 
     function buildRedirectUrl(age, subID) {
         let baseUrl = '';
+        let paramName = '';
         
         if (age === 'over21') {
-            // RewardOrbit - uses both &s1= and &s2= for SubID
+            // RewardOrbit - uses &s2= for SubID only
             baseUrl = 'https://rewardorbit.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY5NjM1OTE2MTFjOTZjMzMzNDEzMWJjYSIsInRzIjoxNzY4ODU3Mjk1OTczfQ';
+            paramName = 's2';
         } else if (age === 'under21') {
-            // Afftrackr - uses both &s1= and &s2= for SubID
+            // Afftrackr - uses &s1= for SubID only
             baseUrl = 'https://t.afftrackr.com/?oex3=JG1Y6Vp0LH%2bbjh3bjrn51TXGZpjGMHexvQJDRoz7h5U%3d';
+            paramName = 's1';
         }
         
-        // Append both s1 and s2 parameters if SubID is available
+        // Append SubID parameter if available
         if (subID) {
             const separator = baseUrl.includes('?') ? '&' : '?';
-            return `${baseUrl}${separator}s1=${encodeURIComponent(subID)}&s2=${encodeURIComponent(subID)}`;
+            return `${baseUrl}${separator}${paramName}=${encodeURIComponent(subID)}`;
         }
         
         return baseUrl;
