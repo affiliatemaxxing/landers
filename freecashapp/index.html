@@ -222,10 +222,10 @@
         }
 
         .age-btn {
-            background: var(--bg-card);
-            border: 2px solid var(--border);
+            background: #1a1d28;
+            border: 2px solid transparent;
             border-radius: 16px;
-            padding: 20px 24px;
+            padding: 24px 24px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: left;
@@ -234,26 +234,39 @@
         }
 
         .age-btn:hover {
-            border-color: var(--brand);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0,255,136,.2);
         }
 
         .age-btn.primary {
-            border-color: var(--brand);
-            background: linear-gradient(135deg, rgba(0,255,136,.05) 0%, transparent 100%);
+            background: var(--brand);
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(0,255,136,.4);
+        }
+
+        .age-btn.primary:hover {
+            background: #00e67a;
+            box-shadow: 0 8px 30px rgba(0,255,136,.5);
+        }
+
+        .age-btn.primary .age-btn-title {
+            color: #000;
+        }
+
+        .age-btn.primary .age-btn-subtitle {
+            color: #0a4d2e;
         }
 
         .age-btn-title {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
             color: var(--text);
             margin-bottom: 8px;
         }
 
         .age-btn-subtitle {
-            font-size: 14px;
-            color: var(--muted);
+            font-size: 15px;
+            color: #7a7f8f;
             line-height: 1.4;
         }
 
@@ -662,7 +675,7 @@
         // Restore console for our own logging
         window._console = originalConsole;
         
-        // Use this for internal logging: window._console.log() instead of console.log()
+        // Use this for internal logging: window._window._console.log() instead of window._console.log()
     })();
 
     // ========================================
