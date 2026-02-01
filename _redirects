@@ -4,3 +4,4 @@
 /form/*      /form/:splat 200
 /jdsports/*  /jdsports/:splat 200
 /freecashapp/*  /freecashapp/:splat 200
+/freecashappfr/*  /freecashappfr/:splat 200
