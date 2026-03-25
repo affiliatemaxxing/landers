@@ -6,3 +6,4 @@
 /freecashapp/*  /freecashapp/:splat 200
 /freecashfr/*  /freecashfr/:splat 200
 /freecashit/*  /freecashit/:splat 200
+/freecashde/*  /freecashde/:splat 200
